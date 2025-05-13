@@ -2,7 +2,7 @@ name: Build & Push course Service Docker Image
 
 on:
   push:
-    branches: ['master']
+    branches: ['main']
     paths:
       - "course_service/**"
   workflow_dispatch:

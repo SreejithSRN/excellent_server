@@ -2,7 +2,7 @@ name: Build & Push gateway Service Docker Image
 
 on:
   push:
-    branches: ['master']
+    branches: ['main']
     paths:
       - "gateway/**"
   workflow_dispatch:

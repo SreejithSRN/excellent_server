@@ -2,7 +2,7 @@ name: Build & Push Auth Service Docker Image
 
 on:
   push:
-    branches: ['master']
+    branches: ['main']
     paths:
       - "auth_service/**"
   workflow_dispatch:

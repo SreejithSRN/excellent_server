@@ -2,7 +2,7 @@ name: Build & Push chat Service Docker Image
 
 on:
   push:
-    branches: ['master']
+    branches: ['main']
     paths:
       - "chat_service/**"
   workflow_dispatch:
