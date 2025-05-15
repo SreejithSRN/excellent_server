@@ -3,6 +3,7 @@ import { createUser } from "../../database/repositories";
 
 export const userCreatedConsumer = async (data: UserEntity) => {
   try {
+    console.log(data,"iam here in course consumer kafka >>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     await createUser(data);
 
     console.log("==========");

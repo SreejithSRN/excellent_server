@@ -7,8 +7,7 @@ import { Consumer, Kafka, Partitioners, Producer } from "kafkajs";
 // });
 const kafka = new Kafka({
 	clientId: "chat-service",
-        brokers:["kafka:9092"]
-   
+    brokers:["kafka:9092"]   
 });
 
 export const producer: Producer = kafka.producer({

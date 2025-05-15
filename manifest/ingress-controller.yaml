@@ -14,7 +14,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: excellent-gateway
+                name: excellent-gateway-service
                 port:
                   number: 4000
           - path: /webhook

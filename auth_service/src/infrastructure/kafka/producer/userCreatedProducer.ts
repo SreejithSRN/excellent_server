@@ -46,7 +46,7 @@ export default async (data: UserEntity | null) => {
         ],
       },
     ];
-
+    console.log(message,"iam from auth kafka producer >>>>>>>>>>>>>>>>>>>")
     await producer.sendBatch({ topicMessages: message });
 
     console.log("Message sent successfully to Kafka topic.");

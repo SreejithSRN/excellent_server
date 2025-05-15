@@ -11,6 +11,7 @@ export const profileEditController = (dependencies: IDependencies) => {
     try {
       const data = req.body;      
       const result = await profileEditUseCase(dependencies).execute(data);
+      
        await userCreatedProducer(result)
       if (result) {
         res.status(httpStatusCode.OK).json({
