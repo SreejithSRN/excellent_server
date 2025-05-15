@@ -34,5 +34,4 @@ chat_service/logs
 chat_service/dist
 chat_service/node_modules
 
-
-
+manifest/configMaps

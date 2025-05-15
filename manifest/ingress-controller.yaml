@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: excellent-ingress
+  annotations:
+    kubernetes.io/ingress.class: webapprouting.kubernetes.azure.com
+spec:
+  ingressClassName: webapprouting.kubernetes.azure.com
+  rules:
+    - host: excellents.shop
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: excellent-gateway
+                port:
+                  number: 4000
+          - path: /webhook
+            pathType: Prefix
+            backend:
+              service:
+                name: excellent-payment-service
+                port:
+                  number: 4004
+          - path: /socket.io
+            pathType: Prefix
+            backend:
+              service:
+                name: excellent-chat-service
+                port:
+                  number: 4005

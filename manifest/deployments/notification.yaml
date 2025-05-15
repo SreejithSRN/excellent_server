@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: excellent-notification-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: excellent-notification-service
+  template:
+    metadata:
+      labels:
+        app: excellent-notification-service
+    spec:
+      containers:
+        - image: sreejimavoor/excellent-notification-service
+          name: excellent-notification-service
+          envFrom:
+            - configMapRef:
+                name: notification-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: excellent-notification-service
+spec:
+  selector:
+    app: excellent-notification-service
+  ports:
+    - protocol: TCP
+      port: 4003
+      targetPort: 4003
+ 

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: excellent-payment-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: excellent-payment-service
+  template:
+    metadata:
+      labels:
+        app: excellent-payment-service
+    spec:
+      containers:
+        - image: sreejimavoor/excellent-payment-service
+          name: excellent-payment-service
+          envFrom:
+            - configMapRef:
+                name: payment-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: excellent-payment-service
+spec:
+  selector:
+    app: excellent-payment-service
+  ports:
+    - protocol: TCP
+      port: 4004
+      targetPort: 4004
+ 

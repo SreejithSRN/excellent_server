@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: excellent-gateway-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: excellent-gateway-service
+  template:
+    metadata:
+      labels:
+        app: excellent-gateway-service
+    spec:
+      containers:
+        - image: sreejimavoor/excellent-gateway-service:latest
+          name: excellent-gateway-service
+          envFrom:
+            - configMapRef:
+                name: gateway-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: excellent-gateway-service
+spec:
+  selector:
+    app: excellent-gateway-service
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+ 

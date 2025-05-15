@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: excellent-chat-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: excellent-chat-service
+  template:
+    metadata:
+      labels:
+        app: excellent-chat-service
+    spec:
+      containers:
+        - image: sreejimavoor/excellent-chat-service:latest
+          name: excellent-chat-service
+          envFrom:
+            - configMapRef:
+                name: chat-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: excellent-chat-service
+spec:
+  selector:
+    app: excellent-chat-service
+  ports:
+    - protocol: TCP
+      port: 4005
+      targetPort: 4005
+ 

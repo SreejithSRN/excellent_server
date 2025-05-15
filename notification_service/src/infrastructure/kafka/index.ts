@@ -1,8 +1,14 @@
 import { Kafka, Producer, Consumer, Partitioners } from "kafkajs";
 
+// export const kafka = new Kafka({
+// 	clientId: "notification-service",
+//     brokers: ["localhost:29092"]
+//     // brokers: ["apache-kafka-service:29092"]
+// });
 export const kafka = new Kafka({
 	clientId: "notification-service",
-    brokers: ["localhost:29092"]
+    brokers:["kafka:9092"]
+
     // brokers: ["apache-kafka-service:29092"]
 });
 

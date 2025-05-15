@@ -1,9 +1,14 @@
 import { Consumer, Kafka, Partitioners, Producer } from "kafkajs";
 
 
+// const kafka = new Kafka({
+// 	clientId: "course-service",
+//     brokers: ["localhost:29092"]    
+// });
 const kafka = new Kafka({
 	clientId: "course-service",
-    brokers: ["localhost:29092"]    
+        brokers:["kafka:9092"]
+   
 });
 
 

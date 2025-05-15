@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: excellent-course-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: excellent-course-service
+  template:
+    metadata:
+      labels:
+        app: excellent-course-service
+    spec:
+      containers:
+        - image: sreejimavoor/excellent-course-service:latest
+          name: excellent-course-service
+          envFrom:
+            - configMapRef:
+                name: course-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: excellent-course-service
+spec:
+  selector:
+    app: excellent-course-service
+  ports:
+    - protocol: TCP
+      port: 4002
+      targetPort: 4002
+ 
