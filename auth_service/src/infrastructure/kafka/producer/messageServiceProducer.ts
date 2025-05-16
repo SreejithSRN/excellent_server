@@ -1,5 +1,14 @@
 import { producer } from "..";
-import { MessageEntity } from "../../../domain/entities"; // Define this entity if not already
+import { MessageEntity } from "../../../domain/entities"; 
+import dotenv from "dotenv";
+dotenv.config();
+
+const { KAFKA_TOPIC_NOTIFICATION } =
+  process.env;
+  if (!KAFKA_TOPIC_NOTIFICATION ) {
+  throw new Error("Missing required Kafka topic environment variables.");
+}
+const NOTIFICATION_TOPIC = KAFKA_TOPIC_NOTIFICATION as string;
 
 export default async (messageData: MessageEntity | null) => {
     if (!messageData) return;
@@ -9,7 +18,7 @@ export default async (messageData: MessageEntity | null) => {
 
         const message = [
             {
-                topic: "notification-service-topic",
+                topic: NOTIFICATION_TOPIC,
                 messages: [
                     {
                         key: "messageSent",

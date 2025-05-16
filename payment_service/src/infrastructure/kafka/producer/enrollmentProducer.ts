@@ -1,11 +1,19 @@
 import { producer } from "..";
+import dotenv from "dotenv";
+dotenv.config();
+const { KAFKA_TOPIC_COURSE} = process.env;
+
+if (!KAFKA_TOPIC_COURSE) {
+  throw new Error("Missing required Kafka topic environment variables.");
+}
+const COURSE_TOPIC = KAFKA_TOPIC_COURSE as string;
 
 export default async (data:{studentId:string,courseId:string}) => {
 	try {
 		await producer.connect();
 		const message: any = [
 			{
-				topic: "course-service-topic",
+				topic: COURSE_TOPIC,
 				messages: [
 					{
 						key: "enrollmentCreated",

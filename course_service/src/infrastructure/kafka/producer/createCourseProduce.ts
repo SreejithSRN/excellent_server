@@ -1,12 +1,24 @@
 import { producer } from "..";
 import { CourseEntity } from "../../../domain/entities/courseEntity";
+import dotenv from "dotenv";
+dotenv.config();
+
+const { KAFKA_TOPIC_PAYMENT, KAFKA_TOPIC_CHAT } = process.env;
+
+if ( !KAFKA_TOPIC_PAYMENT || !KAFKA_TOPIC_CHAT) {
+  throw new Error("Missing required Kafka topic environment variables.");
+}
+
+const PAYMENT_TOPIC = KAFKA_TOPIC_PAYMENT as string;
+const CHAT_TOPIC = KAFKA_TOPIC_CHAT as string;
+
 
 export default async (data: CourseEntity) => {
 	try {
 		await producer.connect();
 		const message: any = [
 			{
-				topic: "payment-service-topic",
+				topic: PAYMENT_TOPIC,
 				messages: [
 					{
 						key: "courseCreated",
@@ -15,7 +27,7 @@ export default async (data: CourseEntity) => {
 				],
 			},
 			{
-				topic: "chat-service-topic",
+				topic: CHAT_TOPIC,
 				messages: [
 					{
 						key: "courseCreated",
