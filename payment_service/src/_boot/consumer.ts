@@ -1,13 +1,23 @@
 
 import { consumer } from "../infrastructure/kafka"
 import { createSubscriber, IPaymentSubscriber } from "../infrastructure/kafka/subscriber"
+import dotenv from "dotenv";
+dotenv.config();
+
+const { KAFKA_TOPIC_PAYMENT } = process.env;
+
+if ( !KAFKA_TOPIC_PAYMENT) {
+  throw new Error("Missing required Kafka topic environment variables.");
+}
+
+const PAYMENT_TOPIC = KAFKA_TOPIC_PAYMENT as string;
 
 
 export const startConsumer=async()=>{
     try {
         await consumer.connect()
         await consumer.subscribe({
-            topic:"payment-service-topic",
+            topic:PAYMENT_TOPIC,
             fromBeginning:true
         })
         const subscriber=createSubscriber()

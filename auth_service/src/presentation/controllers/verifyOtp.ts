@@ -3,6 +3,7 @@ import { IDependencies } from "../../application/interfaces/IDependencies";
 import { constant } from "../../_lib/common/constant";
 import { httpStatusCode } from "../../_lib/common/httpStatusCode";
 import userCreatedProducer from "../../infrastructure/kafka/producer/userCreatedProducer";
+import { messages } from "../../_lib/common/messages";
 
 export const verifyOtpController = (dependencies: IDependencies) => {
   const { useCases } = dependencies;
@@ -22,7 +23,7 @@ export const verifyOtpController = (dependencies: IDependencies) => {
       if (!result) {
         res
           .status(httpStatusCode.BAD_REQUEST)
-          .json({ success: false, message: "Otp mismatch please try again!" });
+          .json({ success: false, message: messages.OTP_Mismatch});
         return;
       }
       const newUser = await createUserUseCase(dependencies).execute(data);
@@ -30,15 +31,14 @@ export const verifyOtpController = (dependencies: IDependencies) => {
       if (!newUser) {
         res
           .status(httpStatusCode.BAD_REQUEST)
-          .json({ success: false, message: "User Creation failed" });
+          .json({ success: false, message: messages.User_Create_Failed });
         return;
       }
-      await userCreatedProducer(newUser)
-      console.log("I reached here after kafka produce")
+      await userCreatedProducer(newUser) 
 
       res.status(httpStatusCode.OK).json({
         success: true,
-        message: "User Creation Successfully",
+        message: messages.User_Create_Success,
         data: newUser,
       });
       return;
@@ -46,7 +46,7 @@ export const verifyOtpController = (dependencies: IDependencies) => {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
-      throw new Error("An unknown error occurred");
+      throw new Error(messages.Unknown_Error);
     }
   };
 };

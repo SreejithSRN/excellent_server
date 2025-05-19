@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../_lib/common/httpStatusCode";
+import { messages } from "../../_lib/common/messages";
 
 export const getInstructorsController = (dependencies: IDependencies) => {
     const { useCases } = dependencies;
@@ -18,15 +19,13 @@ export const getInstructorsController = (dependencies: IDependencies) => {
 
             const searchParam = req.query.search;
       const search: string | undefined =
-        typeof searchParam === "string" ? searchParam : undefined;
-
-      
+        typeof searchParam === "string" ? searchParam : undefined;     
 
          
             if (!isValidNumber(page)) {
                 res.status(httpStatusCode.BAD_REQUEST).json({
                     success: false,
-                    message: "Invalid page number",
+                    message: messages.Page_Invalid,
                 });
                 return;
             }
@@ -34,7 +33,7 @@ export const getInstructorsController = (dependencies: IDependencies) => {
             if (!isValidNumber(limit)) {
                 res.status(httpStatusCode.BAD_REQUEST).json({
                     success: false,
-                    message: "Invalid limit number",
+                    message: messages.Limit_Invalid,
                 });
                 return;
             }
@@ -42,7 +41,7 @@ export const getInstructorsController = (dependencies: IDependencies) => {
            
             const result = await getInstructorsUseCase(dependencies).execute(page, limit,search);
             if (!result) {
-                res.status(404).json({ success: false, message: "No Instructors found" });
+                res.status(404).json({ success: false, message: messages.No_Instructor});
                 return;
               }
 
@@ -52,13 +51,13 @@ export const getInstructorsController = (dependencies: IDependencies) => {
             res.status(httpStatusCode.OK).json({
                 success: true,
                 data,totalCount,
-                message: "All Instructors fetched successfully",
+                message: messages.Fetch_Instructor,
             });
         } catch (error: unknown) {
             if (error instanceof Error) {
               throw new Error(error.message);
             }
-            throw new Error("An unknown error occurred");
+            throw new Error(messages.Unknown_Error);
           }
     };
 };

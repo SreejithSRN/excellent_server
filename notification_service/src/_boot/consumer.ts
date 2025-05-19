@@ -1,12 +1,22 @@
 import { consumer } from "../infrastructure/kafka";
 import { createSubscriber, INotificationSubscriber } from "../infrastructure/kafka/subscriber";
+import dotenv from "dotenv";
+dotenv.config();
+
+const { KAFKA_TOPIC_NOTIFICATION } = process.env;
+
+if ( !KAFKA_TOPIC_NOTIFICATION) {
+  throw new Error("Missing required Kafka topic environment variables.");
+}
+
+const NOTIFICATION_TOPIC = KAFKA_TOPIC_NOTIFICATION as string;
 
 
 export const startConsumer = async () => {
 	try {
 		await consumer.connect();
 		await consumer.subscribe({
-			topic: "notification-service-topic",
+			topic: NOTIFICATION_TOPIC,
 			fromBeginning: true,
 		});
 

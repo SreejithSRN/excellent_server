@@ -11,6 +11,7 @@ import { dependencies } from "../_boot/dependencies"
 import { setUserFromHeaders } from "../_lib/middleware/setUserFromHeaders"
 import http from "http";
 import { connectSocketIo } from "../_lib/socket/connection"
+import { messages } from "../_lib/common/messages"
 
 
 const app:Application=express()
@@ -34,7 +35,7 @@ app.use(setUserFromHeaders)
 app.use("/", routes(dependencies))
 
 app.all("*", (req:Request,res:Response)=>{
-    res.status(httpStatusCode.NOT_FOUND).json({sussess:false,status:httpStatusCode.NOT_FOUND,message:"Chat_API not found"})
+    res.status(httpStatusCode.NOT_FOUND).json({sussess:false,status:httpStatusCode.NOT_FOUND,message:messages.CHAT_API})
 })
 const server = http.createServer(app);
 connectSocketIo(server);

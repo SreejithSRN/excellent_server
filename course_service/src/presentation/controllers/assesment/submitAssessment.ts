@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
+import { messages } from "../../../_lib/common/messages";
 
 export const submitAssessmentController = (dependencies: IDependencies) => {
   const {
@@ -23,7 +24,7 @@ export const submitAssessmentController = (dependencies: IDependencies) => {
       if (!courseId || typeof courseId !== "string") {
         res.status(httpStatusCode.BAD_REQUEST).json({
           success: false,
-          message: "Course ID is required.",
+          message: messages.ID_COURSE_REQUIRED,
         });
         return;
       }
@@ -31,7 +32,7 @@ export const submitAssessmentController = (dependencies: IDependencies) => {
       if (!Array.isArray(answers) || answers.length === 0) {
         res.status(httpStatusCode.BAD_REQUEST).json({
           success: false,
-          message: "Answers must be a non-empty array.",
+          message: messages.ANSWER_NEEDED,
         });
         return;
       }
@@ -45,7 +46,7 @@ export const submitAssessmentController = (dependencies: IDependencies) => {
 
       res.status(httpStatusCode.OK).json({
         success: true,
-        message: "Assessment evaluated successfully.",
+        message: messages.ASSESS_EVALUVATE,
         data: result,
       });
     } catch (error: unknown) {
@@ -57,7 +58,7 @@ export const submitAssessmentController = (dependencies: IDependencies) => {
       } else {
         res.status(httpStatusCode.INTERNAL_SERVER_ERROR).json({
           success: false,
-          message: "An unknown error occurred in submitAssessmentController.",
+          message: messages.UNKNOWN_ERROR,
         });
       }
     }

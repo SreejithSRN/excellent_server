@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../_lib/common/httpStatusCode";
+import { messages } from "../../_lib/common/messages";
 
 export const instructorStatsSummaryController = (dependencies: IDependencies) => {
   const {
@@ -13,7 +14,7 @@ export const instructorStatsSummaryController = (dependencies: IDependencies) =>
 if (!id) {
   res.status(httpStatusCode.UNAUTHORIZED).json({
     success: false,
-    message: "Unauthorized: Instructor ID is missing.",
+    message: messages.UNAUTHORIZED,
   });
   return
 }
@@ -22,7 +23,7 @@ if (!id) {
       res.status(httpStatusCode.OK).json({
         success: true,
         data: response,
-        message: "Fetched instructor dashboard data's succesfully! from payment",
+        message: messages.FETCH_DASHBOARD_INSTRUCTOR,
       });
       return;
     } catch (error: unknown) {
@@ -30,7 +31,7 @@ if (!id) {
         throw new Error(error.message);
       }
       throw new Error(
-        "An unknown error occurred in instructorStatsSummaryController in payment"
+        messages.UNKNOWN_ERROR
       );
     }
   };

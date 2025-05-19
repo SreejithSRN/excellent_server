@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
+import { messages } from "../../../_lib/common/messages";
 
 export const assessmentListController = (dependencies: IDependencies) => {
   const {
@@ -20,7 +21,7 @@ export const assessmentListController = (dependencies: IDependencies) => {
       if (!instructorId || typeof instructorId !== "string") {
         res.status(httpStatusCode.BAD_REQUEST).json({
           success: false,
-          message: "Instructor ID is required.",
+          message: messages.ID_INSTRUCTOR_REQUIRED,
         });
         return;
       }
@@ -30,7 +31,7 @@ export const assessmentListController = (dependencies: IDependencies) => {
       res.status(httpStatusCode.OK).json({
         success: true,
         data: response,
-        message: "Assessments fetched successfully!",
+        message: messages.FETCH_ASSESSMENT,
       });
       return;
     } catch (error: unknown) {
@@ -44,7 +45,7 @@ export const assessmentListController = (dependencies: IDependencies) => {
 
       res.status(httpStatusCode.INTERNAL_SERVER_ERROR).json({
         success: false,
-        message: "An unknown error occurred in assessmentListController.",
+        message: messages.UNKNOWN_ERROR,
       });
       return;
     }

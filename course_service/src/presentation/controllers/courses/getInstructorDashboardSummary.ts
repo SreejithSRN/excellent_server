@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
+import { messages } from "../../../_lib/common/messages";
 
 export const getInstructorDashboardSummaryController = (
   dependencies: IDependencies
@@ -17,7 +18,7 @@ export const getInstructorDashboardSummaryController = (
 if (!id) {
   res.status(httpStatusCode.UNAUTHORIZED).json({
     success: false,
-    message: "Unauthorized: Instructor ID is missing.",
+    message: messages.UNAUTHORIZED,
   });
   return
 }
@@ -29,7 +30,7 @@ if (!id) {
       res.status(httpStatusCode.OK).json({
         success: true,
         data: response,
-        message: "Fetched admin dashboard data's succesfully!",
+        message: messages.FETCH_DASHBOARD,
       });
       return;
     } catch (error: unknown) {
@@ -37,7 +38,7 @@ if (!id) {
         throw new Error(error.message);
       }
       throw new Error(
-        "An unknown error occurred in getAdminDashboardSummaryController"
+        messages.UNKNOWN_ERROR
       );
     }
   };

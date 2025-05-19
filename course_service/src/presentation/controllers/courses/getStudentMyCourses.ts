@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
 import { CourseFilterEntity } from "../../../domain/entities/courseEntity";
+import { messages } from "../../../_lib/common/messages";
 
  export const getStudentMyCoursesController=(dependencies:IDependencies)=>{
     const {useCases:{getStudentMyCoursesUseCase}}=dependencies
@@ -15,7 +16,7 @@ import { CourseFilterEntity } from "../../../domain/entities/courseEntity";
             if (!isValidNumber(page)) {
                 res.status(httpStatusCode.BAD_REQUEST).json({
                     success: false,
-                    message: "Invalid page number",
+                    message: messages.Page_Invalid,
                 });
                 return;
             }
@@ -23,7 +24,7 @@ import { CourseFilterEntity } from "../../../domain/entities/courseEntity";
             if (!isValidNumber(limit)) {
                 res.status(httpStatusCode.BAD_REQUEST).json({
                     success: false,
-                    message: "Invalid limit number",
+                    message: messages.Limit_Invalid,
                 });
                 return;
             }
@@ -43,7 +44,7 @@ import { CourseFilterEntity } from "../../../domain/entities/courseEntity";
                           
             const result = await getStudentMyCoursesUseCase(dependencies).execute(page, limit,id,filters);         
             if (!result) {
-                res.status(httpStatusCode.NOT_FOUND).json({ success: false, message: "No courses found" });
+                res.status(httpStatusCode.NOT_FOUND).json({ success: false, message: messages.NOT_FOUND_COURSE });
                 return;
               }
             // console.log(`Fetched result for page ${page} and limit ${limit}:`, result);
@@ -52,14 +53,14 @@ import { CourseFilterEntity } from "../../../domain/entities/courseEntity";
             res.status(httpStatusCode.OK).json({
                 success: true,
                 data,totalCount,
-                message: "All Students my courses fetched successfully",
+                message: messages.FETCH_STUDENT_MYCOURSE,
             });
             
         } catch (error: unknown) {
             if (error instanceof Error) {
               throw new Error(error.message);
             }
-            throw new Error("An unknown error occurred");
+            throw new Error(messages.UNKNOWN_ERROR);
           }
     }
 }

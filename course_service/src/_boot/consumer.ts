@@ -1,11 +1,21 @@
 import { consumer } from "../infrastructure/kafka"
 import { createSubscriber, ICourseSubscriber } from "../infrastructure/kafka/subscriber"
+import dotenv from "dotenv";
+dotenv.config();
+
+const { KAFKA_TOPIC_COURSE } = process.env;
+
+if ( !KAFKA_TOPIC_COURSE) {
+  throw new Error("Missing required Kafka topic environment variables.");
+}
+
+const COURSE_TOPIC = KAFKA_TOPIC_COURSE as string;
 
 export const startConsumer=async()=>{
     try {
         await consumer.connect()
         await consumer.subscribe({
-            topic:"course-service-topic",
+            topic:COURSE_TOPIC,
             fromBeginning:true
         })
         const subscriber=createSubscriber()

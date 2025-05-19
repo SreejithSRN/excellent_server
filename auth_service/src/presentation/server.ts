@@ -9,6 +9,7 @@ import { routes } from "../infrastructure/routers"
 import { httpStatusCode } from "../_lib/common/httpStatusCode"
 import { dependencies } from "../_boot/dependencies"
 import { setUserFromHeaders } from "../_lib/middleware/setUserFromHeaders"
+import { messages } from "../_lib/common/messages"
 
 
 const app:Application=express()
@@ -34,7 +35,7 @@ app.use(cors(corsOptions))
 app.use(setUserFromHeaders)
 app.use("/", routes(dependencies))
 app.all("*", (req:Request,res:Response)=>{
-    res.status(httpStatusCode.NOT_FOUND).json({sussess:false,status:httpStatusCode.NOT_FOUND,message:"Auth_API not found"})
+    res.status(httpStatusCode.NOT_FOUND).json({sussess:false,status:httpStatusCode.NOT_FOUND,message:messages.Auth_API})
 })
 
 app.listen(PORT, ()=>{

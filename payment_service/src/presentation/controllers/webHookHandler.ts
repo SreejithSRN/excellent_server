@@ -6,6 +6,7 @@ import { PaymentEntity } from "../../domain/entities/paymentEntity";
 import { savePaymentUseCase } from "../../application/useCases";
 import enrollmentProducer from "../../infrastructure/kafka/producer/enrollmentProducer";
 import { httpStatusCode } from "../../_lib/common/httpStatusCode";
+import { messages } from "../../_lib/common/messages";
 
 const stripe = require("stripe")(env_variables.STRIPE_SECRET_KEY);
 
@@ -34,7 +35,7 @@ export const stripeWebhookHandler = (dependencies: IDependencies) => {
         .status(httpStatusCode.BAD_REQUEST)
         .json({
           success: false,
-          message: "Webhook signature verification failed",
+          message: messages.WEBHOOK_SIG_FAILED,
         });
       return;
     }
@@ -66,7 +67,7 @@ export const stripeWebhookHandler = (dependencies: IDependencies) => {
 
     res
       .status(httpStatusCode.OK)
-      .json({ success: true, message: "Webhook processed successfully" });
+      .json({ success: true, message: messages.WEBHOOK_SUCCESS });
   };
 };
 
@@ -97,14 +98,7 @@ if (charges.data.length > 0) {
   receipt = charges.data[0].receipt_url || "";
 }
 
-    // if (session.payment_intent) {
-    //   const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent);
-      
-    //   if (paymentIntent.charges?.data.length > 0) {
-    //     const charge = paymentIntent.charges.data[0]; // Get the first charge
-    //     receipt = charge.receipt_url || "";
-    //   }
-    // }
+   
     const data: PaymentEntity = {
       courseId,
       studentId,

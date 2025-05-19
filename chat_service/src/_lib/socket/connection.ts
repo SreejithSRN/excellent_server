@@ -10,7 +10,7 @@ const userSocketMap: UserSocketMap = {};
 export const connectSocketIo = (server: http.Server) => {
   const io = new Server(server, {
     cors: {
-      origin: "*", // or your frontend domain
+      origin: "*", // or frontend domain
       methods: ["GET", "POST"],
     },
     path: "/socket.io/",

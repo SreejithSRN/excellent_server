@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../_lib/common/httpStatusCode";
+import { messages } from "../../_lib/common/messages";
 
 export const addChatController = (dependencies: IDependencies) => {
   const {
@@ -13,7 +14,7 @@ export const addChatController = (dependencies: IDependencies) => {
       if (!id) {
         res.status(httpStatusCode.UNAUTHORIZED).json({
           success: false,
-          message: "Unauthorized: ID not found",
+          message: messages.UNAUTHORIZED,
         });
         return;
       }    
@@ -21,13 +22,13 @@ export const addChatController = (dependencies: IDependencies) => {
       res.status(httpStatusCode.OK).json({
         success: true,
         data: response,
-        message: "Chats added succesfully!",
+        message: messages.CHAT_MESSAGE_SUCCESS,
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
-      throw new Error("An unknown error occurred in chat adding");
+      throw new Error(messages.Unknown_Error);
     }
   };
 };

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { env_variables } from "../../_boot/config";
 import { IDependencies } from "../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../_lib/common/httpStatusCode";
+import { messages } from "../../_lib/common/messages";
 
 const stripe = require('stripe')(env_variables.STRIPE_SECRET_KEY)
 
@@ -35,13 +36,13 @@ export const createCheckOutSessionController=(dependencies:IDependencies)=>{
                     instructorRef                    
                 }
                })              
-               res.status(httpStatusCode.OK).json({success:true,data:{id:session.id},message:"message from payment side"}) 
+               res.status(httpStatusCode.OK).json({success:true,data:{id:session.id},message:messages.GEN_MESSAGE}) 
                 
         } catch (error: unknown) {
             if (error instanceof Error) {
               throw new Error(error.message);
             }
-            throw new Error("An unknown error occurred in add Course");
+            throw new Error(messages.UNKNOWN_ERROR);
           }
     }
 }

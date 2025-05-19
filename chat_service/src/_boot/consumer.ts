@@ -1,13 +1,23 @@
 
 import { consumer } from "../infrastructure/kafka"
 import { createSubscriber, IPaymentSubscriber } from "../infrastructure/kafka/subscriber"
+import dotenv from "dotenv";
+dotenv.config();
+
+const { KAFKA_TOPIC_CHAT } = process.env;
+
+if ( !KAFKA_TOPIC_CHAT) {
+  throw new Error("Missing required Kafka topic environment variables.");
+}
+
+const CHAT_TOPIC = KAFKA_TOPIC_CHAT as string;
 
 
 export const startConsumer=async()=>{
     try {
         await consumer.connect()
         await consumer.subscribe({
-            topic:"chat-service-topic",
+            topic:CHAT_TOPIC,
             fromBeginning:true
         })
         const subscriber=createSubscriber()

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../_lib/common/httpStatusCode";
+import { messages } from "../../_lib/common/messages";
 
 export const getSummaryController = (dependencies: IDependencies) => {
   const {
@@ -12,7 +13,7 @@ export const getSummaryController = (dependencies: IDependencies) => {
       res.status(httpStatusCode.OK).json({
         success: true,
         data: response,
-        message: "Fetched admin dashboard data's succesfully! from payment",
+        message: messages.FETCH_DASHBOARD,
       });
       return;
     } catch (error: unknown) {
@@ -20,7 +21,7 @@ export const getSummaryController = (dependencies: IDependencies) => {
         throw new Error(error.message);
       }
       throw new Error(
-        "An unknown error occurred in getSummaryController in payment"
+        messages.UNKNOWN_ERROR
       );
     }
   };

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
+import { messages } from "../../../_lib/common/messages";
 
 export const getCategoriesController=(dependencies:IDependencies)=>{
     const {useCases:{getCategoriesUseCase}}=dependencies
@@ -16,7 +17,7 @@ export const getCategoriesController=(dependencies:IDependencies)=>{
             if (!isValidNumber(page)) {
                 res.status(400).json({
                     success: false,
-                    message: "Invalid page number",
+                    message: messages.Page_Invalid,
                 });
                 return;
             }
@@ -24,13 +25,13 @@ export const getCategoriesController=(dependencies:IDependencies)=>{
             if (!isValidNumber(limit)) {
                 res.status(httpStatusCode.BAD_REQUEST).json({
                     success: false,
-                    message: "Invalid limit number",
+                    message: messages.Limit_Invalid,
                 });
                 return;
             }
             const result = await getCategoriesUseCase(dependencies).execute(page, limit,search);
             if (!result) {
-                res.status(httpStatusCode.NOT_FOUND).json({ success: false, message: "No categories found" });
+                res.status(httpStatusCode.NOT_FOUND).json({ success: false, message: messages.NO_CATEGORIES });
                 return;
               }
             // console.log(`Fetched result for page ${page} and limit ${limit}:`, result);
@@ -39,7 +40,7 @@ export const getCategoriesController=(dependencies:IDependencies)=>{
             res.status(httpStatusCode.OK).json({
                 success: true,
                 data,totalCount,
-                message: "All categories fetched successfully",
+                message: messages.FETCH_CATEGORIES,
             });
 
             
@@ -47,7 +48,7 @@ export const getCategoriesController=(dependencies:IDependencies)=>{
             if (error instanceof Error) {
               throw new Error(error.message);
             }
-            throw new Error("An unknown error occurred");
+            throw new Error(messages.UNKNOWN_ERROR);
           }
     }
 

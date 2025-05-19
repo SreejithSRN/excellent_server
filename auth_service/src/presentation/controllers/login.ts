@@ -5,6 +5,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../../_lib/utility/jwt";
+import { messages } from "../../_lib/common/messages";
 
 export const loginUserController = (dependencies: IDependencies) => {
   const { useCases } = dependencies;
@@ -29,8 +30,7 @@ export const loginUserController = (dependencies: IDependencies) => {
       if (result?.isBlocked) {
         res.status(httpStatusCode.BAD_REQUEST).json({
           success: false,
-          message:
-            "Your account is disabled by Excellent Team, please send mail for further information",
+          message: messages.Account_Stat,
         });
         return;
       }
@@ -40,7 +40,7 @@ export const loginUserController = (dependencies: IDependencies) => {
       if (result?.isOtpVerified && result?.isRequested && result?.isRejected) {
         res.status(httpStatusCode.BAD_REQUEST).json({
           success: false,
-          message: "Account verification under processing. Please try later",
+          message: messages.Account_Verification,
         });
         return;
       }
@@ -70,7 +70,7 @@ export const loginUserController = (dependencies: IDependencies) => {
       res.status(httpStatusCode.OK).json({
         success: true,
         data: result,
-        message: "User logged in successfully",
+        message: messages.Login_Success,
       });
 
       console.log(result, "iam from login controller ...........");
@@ -79,7 +79,7 @@ export const loginUserController = (dependencies: IDependencies) => {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
-      throw new Error("An unknown error occurred");
+      throw new Error(messages.Unknown_Error);
     }
   };
 };

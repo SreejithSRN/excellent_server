@@ -2,22 +2,20 @@ import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
 import { CourseFilterEntity } from "../../../domain/entities/courseEntity";
+import { messages } from "../../../_lib/common/messages";
 
 
 export const getCoursesController=(dependencies:IDependencies)=>{
     const {useCases:{getCoursesUseCase}}=dependencies
     const isValidNumber = (value: any) => !isNaN(parseInt(value, 10));
     return async (req:Request,res:Response,next:NextFunction):Promise<void>=>{
-        try {  
-            
-          
-          
+        try {            
             const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
             const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
             if (!isValidNumber(page)) {
                 res.status(400).json({
                     success: false,
-                    message: "Invalid page number",
+                    message: messages.Page_Invalid,
                 });
                 return;
             }
@@ -25,7 +23,7 @@ export const getCoursesController=(dependencies:IDependencies)=>{
             if (!isValidNumber(limit)) {
                 res.status(httpStatusCode.BAD_REQUEST).json({
                     success: false,
-                    message: "Invalid limit number",
+                    message: messages.Limit_Invalid,
                 });
                 return;
             }
@@ -42,13 +40,10 @@ export const getCoursesController=(dependencies:IDependencies)=>{
                 maxPrice: maxPrice ? Number(maxPrice) : undefined,
               } : {};
 
-         
-             
-
 
             const result = await getCoursesUseCase(dependencies).execute(page, limit,filters);         
             if (!result) {
-                res.status(httpStatusCode.NOT_FOUND).json({ success: false, message: "No courses found" });
+                res.status(httpStatusCode.NOT_FOUND).json({ success: false, message: messages.NOT_FOUND_COURSE });
                 return;
               }
             // console.log(`Fetched result for page ${page} and limit ${limit}:`, result);
@@ -57,7 +52,7 @@ export const getCoursesController=(dependencies:IDependencies)=>{
             res.status(httpStatusCode.OK).json({
                 success: true,
                 data,totalCount,
-                message: "All courses fetched successfully",
+                message: messages.FETCH_COURSE_SUCCESS,
             });
 
             
@@ -65,7 +60,7 @@ export const getCoursesController=(dependencies:IDependencies)=>{
             if (error instanceof Error && error.message) {
                 next(new Error(error.message)); // Passes the error to Express error handler
               } else {
-                next(new Error("An unknown error occurred"));
+                next(new Error(messages.UNKNOWN_ERROR));
               }    
           }
     }

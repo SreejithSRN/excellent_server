@@ -4,6 +4,7 @@ import { hashPassword } from "../../_lib/utility/bcrypt/hashpassword";
 import { httpStatusCode } from "../../_lib/common/httpStatusCode";
 import { generateOTP } from "../../_lib/utility/otp/generateOtp";
 import { sendOTP } from "../../_lib/utility/otp/sendOtp";
+import { messages } from "../../_lib/common/messages";
 
 export const signupController = (dependencies: IDependencies) => {
   const { useCases } = dependencies;
@@ -22,7 +23,7 @@ export const signupController = (dependencies: IDependencies) => {
       if (emailResult) {
         res.status(httpStatusCode.CONFLICT).json({
           success: false,
-          message: "Email already registered. Try alternative",
+          message: messages.Email_Taken,
         });
         return;
       }
@@ -31,7 +32,7 @@ export const signupController = (dependencies: IDependencies) => {
       if (nameResult) {
         res.status(httpStatusCode.CONFLICT).json({
           success: false,
-          message: "UserName already taken. Try alternative",
+          message: messages.UserName_Taken,
         });
         return;
       }
@@ -50,18 +51,18 @@ export const signupController = (dependencies: IDependencies) => {
       if (!otpCreate) {
         res
           .status(httpStatusCode.INTERNAL_SERVER_ERROR)
-          .json({ success: false, message: "Otp creation failed" });
+          .json({ success: false, message: messages.OTP_Creation_Fail });
       } else {
         await sendOTP(email,otp)
         res
           .status(httpStatusCode.OK)
-          .json({ success: true, message: "Otp Created", data: req.body });
+          .json({ success: true, message: messages.OTP_Creation_Success, data: req.body });
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
-      throw new Error("An unknown error occurred");
+      throw new Error(messages.Unknown_Error);
     }
   };
 };

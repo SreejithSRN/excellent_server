@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../_lib/common/httpStatusCode";
+import { messages } from "../../_lib/common/messages";
 
 export const getStudentsController = (dependencies: IDependencies) => {
   const { useCases } = dependencies;
@@ -27,7 +28,7 @@ export const getStudentsController = (dependencies: IDependencies) => {
       if (!isValidNumber(page)) {
         res.status(httpStatusCode.BAD_REQUEST).json({
           success: false,
-          message: "Invalid page number",
+          message: messages.Page_Invalid,
         });
         return;
       }
@@ -35,7 +36,7 @@ export const getStudentsController = (dependencies: IDependencies) => {
       if (!isValidNumber(limit)) {
         res.status(httpStatusCode.BAD_REQUEST).json({
           success: false,
-          message: "Invalid limit number",
+          message: messages.Limit_Invalid,
         });
         return;
       }
@@ -48,7 +49,7 @@ export const getStudentsController = (dependencies: IDependencies) => {
       if (!result) {
         res
           .status(httpStatusCode.NOT_FOUND)
-          .json({ success: false, message: "No students found" });
+          .json({ success: false, message: messages.No_Student });
         return;
       }
       console.log(
@@ -61,13 +62,13 @@ export const getStudentsController = (dependencies: IDependencies) => {
         success: true,
         data,
         totalCount,
-        message: "All students fetched successfully",
+        message: messages.Fetch_Student,
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
-      throw new Error("An unknown error occurred");
+      throw new Error(messages.Unknown_Error);
     }
   };
 };

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
+import { messages } from "../../../_lib/common/messages";
 
 export const reviewCommentController = (dependencies: IDependencies) => {
   const {
@@ -18,7 +19,7 @@ export const reviewCommentController = (dependencies: IDependencies) => {
       if (!studentId) {
         res.status(httpStatusCode.UNAUTHORIZED).json({
           success: false,
-          message: "Unauthorized: student ID not found",
+          message: messages.UNAUTHORIZED,
         });
         return;
       }
@@ -31,14 +32,14 @@ export const reviewCommentController = (dependencies: IDependencies) => {
       res.status(httpStatusCode.OK).json({
         success: true,
         data: response,
-        message: "Comment added succesfully!",
+        message: messages.COMMENTS_SUCCESS,
       });
       return;
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
-      throw new Error("An unknown error occurred");
+      throw new Error(messages.UNKNOWN_ERROR);
     }
   };
 };

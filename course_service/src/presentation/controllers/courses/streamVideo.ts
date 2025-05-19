@@ -3,6 +3,7 @@ import { IDependencies } from "../../../application/interfaces/IDependencies";
 import axios from "axios";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
 import { env_variables } from "../../../_boot/config";
+import { messages } from "../../../_lib/common/messages";
 
 export const streamVideoController = (dependencies: IDependencies) => {
   const {
@@ -22,7 +23,7 @@ export const streamVideoController = (dependencies: IDependencies) => {
       if (!course || !course.lessons) {
         res.status(httpStatusCode.NOT_FOUND).json({
           success: false,
-          message: "No course found with this courseId",
+          message: messages.NO_COURSE_WITH_ID,
           data: {},
         });
         return;
@@ -35,7 +36,7 @@ export const streamVideoController = (dependencies: IDependencies) => {
       if (!lesson || typeof lesson.video !== "string") {
         res.status(httpStatusCode.NOT_FOUND).json({
           success: false,
-          message: "No lesson found with this lessonId",
+          message: messages.NO_LESSON_WITH_ID,
           data: {},
         });
         return;
@@ -45,7 +46,7 @@ export const streamVideoController = (dependencies: IDependencies) => {
       const range = req.headers.range;
 
       if (!range) {
-        res.status(400).send("Requires Range header");
+        res.status(httpStatusCode.BAD_REQUEST).send("Requires Range header");
         return;
       }
 

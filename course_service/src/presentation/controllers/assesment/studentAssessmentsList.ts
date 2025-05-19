@@ -3,6 +3,7 @@
 import { Request, Response, NextFunction } from "express";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
+import { messages } from "../../../_lib/common/messages";
 export const studentAssessmentsListController = (dependencies: IDependencies) => {
   const {
     useCases: { studentAssessmentsListUseCase },
@@ -16,7 +17,7 @@ export const studentAssessmentsListController = (dependencies: IDependencies) =>
       if (!studentId) {
         res.status(httpStatusCode.UNAUTHORIZED).json({
           success: false,
-          message: "Unauthorized access. Student ID not found.",
+          message: messages.UNAUTHORIZED,
         });
         return;
       }
@@ -37,7 +38,7 @@ export const studentAssessmentsListController = (dependencies: IDependencies) =>
       } else {
         res.status(httpStatusCode.INTERNAL_SERVER_ERROR).json({
           success: false,
-          message: "An unknown error occurred in studentAssessmentsListController.",
+          message: messages.UNKNOWN_ERROR,
         });
       }
     }

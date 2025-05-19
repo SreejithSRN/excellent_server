@@ -58,7 +58,7 @@ export const roleAuthMiddleware =
           
           res.cookie("access_token", newAccessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: true,
             sameSite: "none",
           });
           user = verifyToken(newAccessToken, env_variables.ACCESS_TOKEN_SECRET);

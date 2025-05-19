@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
+import { messages } from "../../../_lib/common/messages";
 
 export const getTestAssessmentController = (dependencies: IDependencies) => {
   const {
-    useCases: { getTestAssessmentUseCase},
+    useCases: { getTestAssessmentUseCase },
   } = dependencies;
 
   return async (
@@ -13,24 +14,24 @@ export const getTestAssessmentController = (dependencies: IDependencies) => {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const { id:courseId } = req.params;
-
-      console.log("Getting test assessment for course:", courseId);
+      const { id: courseId } = req.params;
 
       if (!courseId || typeof courseId !== "string") {
         res.status(httpStatusCode.BAD_REQUEST).json({
           success: false,
-          message: "Course ID is required.",
+          message: messages.ID_COURSE_REQUIRED,
         });
         return;
       }
 
-      const response = await getTestAssessmentUseCase(dependencies).execute(courseId);
+      const response = await getTestAssessmentUseCase(dependencies).execute(
+        courseId
+      );
 
       res.status(httpStatusCode.OK).json({
         success: true,
         data: response,
-        message: "Assessment fetched successfully!",
+        message: messages.FETCH_ASSESSMENT,
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -43,7 +44,7 @@ export const getTestAssessmentController = (dependencies: IDependencies) => {
 
       res.status(httpStatusCode.INTERNAL_SERVER_ERROR).json({
         success: false,
-        message: "An unknown error occurred in getTestAssessmentController.",
+        message: messages.UNKNOWN_ERROR,
       });
     }
   };

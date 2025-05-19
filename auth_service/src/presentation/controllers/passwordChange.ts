@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../_lib/common/httpStatusCode";
 import { hashPassword } from "../../_lib/utility/bcrypt/hashpassword";
+import { messages } from "../../_lib/common/messages";
 
 export const passwordChangeController = (dependencies: IDependencies) => {
   const { useCases } = dependencies;
@@ -23,20 +24,20 @@ export const passwordChangeController = (dependencies: IDependencies) => {
         res.status(httpStatusCode.OK).json({
           success: true,
           data: null,
-          message: "Password Updated successfully",
+          message: messages.Pass_Update,
         });
       } else {
         res.status(httpStatusCode.NOT_MODIFIED).json({
           success: false,
           data: null,
-          message: "Password updation failed",
+          message: messages.Pass_Failed,
         });
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
-      throw new Error("An unknown error occurred");
+      throw new Error(messages.Unknown_Error);
     }
   };
 };

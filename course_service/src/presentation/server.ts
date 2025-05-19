@@ -9,12 +9,13 @@ import { dependencies } from "../_boot/dependencies";
 import { httpStatusCode } from "../_lib/common/httpStatusCode";
 import { routes } from "../infrastructure/routers";
 import { setUserFromHeaders } from "../_lib/middleware/setUserFromHeaders";
+import { messages } from "../_lib/common/messages";
 
 const app: Application = express();
 const PORT: number = Number(env_variables.PORT || 4002);
 
 const corsOptions = {
-  origin: env_variables.FRONTEND_URL || "http://localhost:3000",
+  origin: env_variables.FRONTEND_URL || messages.URL_ALT,
   methods: "GET,HEAD,POST,PUT,PATCH,DELETE",
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization", "Cookie", "Range"],
@@ -42,7 +43,7 @@ app.all("*", (req: Request, res: Response) => {
     .json({
       sussess: false,
       status: httpStatusCode.NOT_FOUND,
-      message: "Course_API not found",
+      message: messages.COURSE_API,
     });
 });
 

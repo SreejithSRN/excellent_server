@@ -3,6 +3,7 @@ import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { PricingType } from "../../../domain/entities/courseEntity";
 import createCourseProduce from "../../../infrastructure/kafka/producer/createCourseProduce";
+import { messages } from "../../../_lib/common/messages";
 
 export const addCourseController = (dependencies: IDependencies) => {
   const {
@@ -27,7 +28,7 @@ export const addCourseController = (dependencies: IDependencies) => {
       delete req.body.pricingType
       delete req.body.price;
       
-      console.log(req.body,"body afteradding the profducnt ===================================================")
+      
 
 
       const response = await addCourseUseCase(dependencies).execute(req.body);
@@ -35,7 +36,7 @@ export const addCourseController = (dependencies: IDependencies) => {
         res.status(httpStatusCode.CONFLICT).json({
             success: false,
             data: response,
-            message: "Course created Failed",
+            message: messages.COURSE_FAILED,
           })
           return
       }
@@ -45,14 +46,14 @@ export const addCourseController = (dependencies: IDependencies) => {
       res.status(httpStatusCode.OK).json({
         success: true,
         data: response,
-        message: "Course created succesfully!",
+        message: messages.COURSE_CREATED,
       });
       return
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
-      throw new Error("An unknown error occurred in add Course");
+      throw new Error(messages.UNKNOWN_ERROR);
     }
   };
 };

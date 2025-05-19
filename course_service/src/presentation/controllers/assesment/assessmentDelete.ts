@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { httpStatusCode } from "../../../_lib/common/httpStatusCode";
+import { messages } from "../../../_lib/common/messages";
 
 export const assessmentDeleteController = (dependencies: IDependencies) => {
   const {
@@ -20,7 +21,7 @@ export const assessmentDeleteController = (dependencies: IDependencies) => {
       if (!assessmentId || typeof assessmentId !== "string") {
         res.status(httpStatusCode.BAD_REQUEST).json({
           success: false,
-          message: "Assessment ID is required.",
+          message: messages.ID_REQUIRED,
         });
         return;
       }
@@ -30,14 +31,14 @@ export const assessmentDeleteController = (dependencies: IDependencies) => {
       if (!result) {
         res.status(httpStatusCode.NOT_FOUND).json({
           success: false,
-          message: "Assessment not found or could not be deleted.",
+          message: messages.NOT_FOUND_ASSESSMENT,
         });
         return;
       }
 
       res.status(httpStatusCode.OK).json({
         success: true,
-        message: "Assessment deleted successfully.",
+        message: messages.DELETED_ASSESMENT,
       });
       return;
     } catch (error: unknown) {
@@ -51,7 +52,7 @@ export const assessmentDeleteController = (dependencies: IDependencies) => {
 
       res.status(httpStatusCode.INTERNAL_SERVER_ERROR).json({
         success: false,
-        message: "An unknown error occurred in assessmentDeleteController.",
+        message: messages.UNKNOWN_ERROR,
       });
       return;
     }
